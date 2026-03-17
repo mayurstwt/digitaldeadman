@@ -2,7 +2,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { registerAction } from "@/app/actions";
 import { getCurrentUser } from "@/lib/auth";
-import { Suspense } from "react";
 
 type RegisterPageProps = {
   searchParams: Promise<{

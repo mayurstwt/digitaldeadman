@@ -60,12 +60,12 @@ export default async function HowItWorksPage() {
                     <div className="prose prose-invert max-w-none text-zinc-400 space-y-6">
                         <p>
                             When you create a project, our system generates a unique management token.
-                            This token is tied to the embed script you place on your client's site.
+                            This token is tied to the embed script you place on your client&apos;s site.
                         </p>
                         <p>
-                            The script is lightweight and asynchronous. It checks your project's status
+                            The script is lightweight and asynchronous. It checks your project&apos;s status
                             from our API. If the status is <strong>pending</strong>, it injects a
-                            professional notification bar at the top of the client's page.
+                            professional notification bar at the top of the client&apos;s page.
                         </p>
                         <p>
                             Once you receive payment, you simply flip the toggle in your dashboard.

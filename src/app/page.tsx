@@ -109,14 +109,7 @@ export default async function Home() {
                 Sign up, create a project, then copy the embed snippet for your client site.
               </p>
             </div>
-            {/* <div className="mt-4">
-              <Link
-                href="/projects"
-                className="text-sm font-medium text-zinc-400 transition-colors hover:text-white"
-              >
-                Open freelancer dashboard →
-              </Link>
-            </div> */}
+
           </div>
 
           <div className="relative">

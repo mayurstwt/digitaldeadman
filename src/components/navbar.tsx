@@ -39,12 +39,7 @@ export async function Navbar() {
                             >
                                 Dashboard
                             </Link>
-                            {/* <Link
-                                href="/create"
-                                className="transition-colors hover:text-white"
-                            >
-                                Create Project
-                            </Link> */}
+
                             <form action={logoutAction} className="inline">
                                 <button
                                     type="submit"

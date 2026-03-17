@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import {
   archiveProjectAction,
-  logoutAction,
   setProjectStatusAction,
   unarchiveProjectAction,
 } from "@/app/actions";

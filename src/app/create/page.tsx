@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { createProjectAction, logoutAction } from "@/app/actions";
+import { createProjectAction } from "@/app/actions";
 import { requireCurrentUser } from "@/lib/auth";
 
 type CreatePageProps = {
