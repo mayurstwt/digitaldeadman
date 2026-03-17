@@ -24,3 +24,7 @@ body {
   color: var(--foreground);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+html {
+  scroll-behavior: smooth;
+}
