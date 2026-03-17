@@ -1,122 +1,136 @@
 # Digital Deadman
 
-**Add a visible payment bar to a client website until the final invoice is paid.**
+Digital Deadman lets a freelancer create a project, generate an embeddable script, install it on a client website, and switch that project between `pending` and `paid` from a private management page.
 
-Digital Deadman is a small embeddable script for freelance developers. You deploy this app once, then copy one script tag into a client website. If the project is still unpaid, the script injects a fixed top bar across the site.
+## Current MVP
 
-## What Exists Now
+- Landing page with product explanation, FAQ, and demo snippet
+- Register page at `/register`
+- Login page at `/login`
+- Freelancer dashboard at `/projects`
+- Project creation flow at `/create`
+- Session-protected project management page at `/projects/[manageToken]`
+- Edit flow at `/projects/[manageToken]/edit`
+- Public embed script at `/embed/bar`
+- Live project-state API at `/api/projects/[publicToken]`
 
-- A landing page that explains the product visually.
-- A real embeddable script served from `/embed/bar`.
-- A zero-backend MVP flow based on `data-*` attributes on the script tag.
+## How It Works
 
-## How The Current MVP Works
+1. Run or deploy this app.
+2. Register at `/register` or login at `/login`.
+3. Open `/create`.
+4. Create a new project.
+5. Review all projects from `/projects`.
+6. Copy the generated script from the project page.
+7. Paste that script into the client website.
+8. Keep the project status as `pending` until the invoice is paid.
+9. Mark the project as `paid` from the project page or dashboard to hide the bar.
+10. Edit project details or archive old projects from the freelancer dashboard when needed.
 
-1. Deploy this app.
-2. Copy the script tag from the landing page or the snippet below.
-3. Paste it into the client website.
-4. Keep `data-ddm-status="pending"` while payment is still open.
-5. Change it to `paid` when the invoice is settled.
+## Local Testing
 
-If status is `pending`, the bar appears. If status is `paid`, nothing is injected.
-
-## Script Snippet
-
-```html
-<script
-  defer
-  src="https://your-domain.com/embed/bar"
-  data-ddm-status="pending"
-  data-ddm-project="Marketing site"
-  data-ddm-client="Acme Studio"
-  data-ddm-contact-email="you@example.com"
-  data-ddm-invoice-url="https://payments.example.com/invoice/123"
-></script>
-```
-
-## Script Options
-
-- `data-ddm-status`: `pending` shows the bar, `paid` hides it.
-- `data-ddm-project`: Project name shown in the default message.
-- `data-ddm-client`: Client name shown in the default message.
-- `data-ddm-contact-email`: Optional mailto link in the bar.
-- `data-ddm-invoice-url`: Optional invoice/payment URL button.
-- `data-ddm-message`: Optional custom bar message. If set, it overrides the default generated text.
-- `data-ddm-accent`: Optional button color, for example `#dc2626`.
-- `data-ddm-text-color`: Optional text color, for example `#fff7ed`.
-
-## How To Apply This On A Client Website
-
-### Plain HTML
-
-Paste the script before `</body>`:
-
-```html
-<script
-  defer
-  src="https://your-domain.com/embed/bar"
-  data-ddm-status="pending"
-  data-ddm-project="Portfolio website"
-  data-ddm-client="Client Name"
-  data-ddm-contact-email="freelancer@example.com"
-></script>
-```
-
-### Next.js / React
-
-Put it in the global layout or the page that should stay protected:
-
-```tsx
-<script
-  defer
-  src="https://your-domain.com/embed/bar"
-  data-ddm-status="pending"
-  data-ddm-project="Marketing site"
-  data-ddm-client="Client Name"
-  data-ddm-contact-email="freelancer@example.com"
-></script>
-```
-
-### Webflow / Framer / CMS
-
-Add the same script inside custom code injection for the site footer or global custom code area.
-
-## Local Development
-
-### Prerequisites
-
-- Node.js 18+
-- npm
-
-### Installation
-
-1. Install dependencies:
+### Start the app
 
 ```bash
 npm install
-```
-
-2. Run the app:
-
-```bash
 npm run dev
 ```
 
-3. Open `http://localhost:3000`.
+Open `http://localhost:3000`.
 
-4. Test the script directly at `http://localhost:3000/embed/bar`.
+### Create a test project
 
-## Testing On A Real Client Project
+1. Visit `http://localhost:3000/create`
+2. Register a user account or login
+3. Fill in the form
+4. Submit it
+5. You will land on a management URL like:
 
-1. Deploy this app to your own domain or a Vercel URL.
-2. Copy the script tag and replace `https://your-domain.com` with that live URL.
-3. Paste the script into the client project.
-4. Visit the client site and confirm the bar appears.
-5. Change `data-ddm-status` from `pending` to `paid` and redeploy the client site.
-6. Refresh the client site and confirm the bar is gone.
+```text
+http://localhost:3000/projects/your-manage-token
+```
 
-## Important Limitation
+6. Copy the embed script from that page
 
-If the client fully controls the code and hosting, they can remove the script. This MVP is meant for the phase before final code or deployment handover, when the freelancer still controls release.
+### Test on a local client website
 
-Built for freelancers who need clean leverage on final payment.
+Paste the generated script into any local site:
+
+```html
+<script
+  defer
+  src="http://localhost:3000/embed/bar"
+  data-ddm-project-token="your-public-token"
+></script>
+```
+
+Examples:
+- Plain HTML site running on `http://127.0.0.1:5500`
+- Another Next.js app running on `http://localhost:3001`
+- Vite app running on `http://localhost:5173`
+
+If your project has allowed domains configured, make sure the domain you are testing on matches that list.
+
+### Toggle the status
+
+1. Go back to your private project page
+2. Click `Mark Pending` to show the bar
+3. Click `Mark Paid` to hide the bar
+4. Refresh the client website after each change
+
+## Embed Script
+
+The generated embed looks like this:
+
+```html
+<script
+  defer
+  src="https://your-domain.com/embed/bar"
+  data-ddm-project-token="paste-token-from-your-dashboard"
+></script>
+```
+
+Replace `https://your-domain.com` with the URL where this app is deployed.
+
+## Authentication
+
+App routes for project management require a signed-in user session:
+
+- `/create`
+- `/projects`
+- `/projects/:manageToken`
+- `/projects/:manageToken/edit`
+
+Users register as freelancers and only see/manage their own projects.
+
+## Allowed Domains
+
+When creating a project, you can provide a comma-separated list such as:
+
+```text
+clientsite.com, www.clientsite.com
+```
+
+If allowed domains are set, the bar will only appear when the script runs on those domains. If you leave the field empty, the embed works on any domain.
+
+## Deployment
+
+See [DEPLOYMENT.md](file:///home/mayur/Desktop/Projects/small-builds/digitaldeadman/DEPLOYMENT.md) for full hosting and database setup instructions.
+
+## Important: Handover Strategy
+
+Digital Deadman relies on the freelancer's control of the deployment **before** final handover.
+- If the client fully controls the codebase and hosting, they can delete the script or bypass the domain checks.
+- This is not a bug, but a fundamental design choice: the tool provides leverage while you still manage the release process.
+- Once payment is complete, you can mark the project as `paid` and (optionally) remove the script before final source code delivery.
+
+## Storage and Configuration
+
+The current MVP stores project records and rate limits in MongoDB. Set:
+
+```text
+MONGODB_URI=mongodb://127.0.0.1:27017
+MONGODB_DB_NAME=digitaldeadman
+AUTH_SECRET=your-secure-auth-secret
+```
+
