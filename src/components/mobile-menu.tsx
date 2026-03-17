@@ -5,7 +5,7 @@ import Link from "next/link";
 import { logoutAction } from "@/app/actions";
 
 type MobileMenuProps = {
-    user: any;
+    user: { id: string; name: string; email: string; role: string } | null;
 };
 
 export function MobileMenu({ user }: MobileMenuProps) {
