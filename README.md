@@ -1,75 +1,122 @@
 # Digital Deadman
 
-**Stop getting ghosted by clients. Secure your final payout with one line of code.**
+**Add a visible payment bar to a client website until the final invoice is paid.**
 
-Digital Deadman is a tool for freelance developers to ensure they get paid for their work. It provides a simple script that can be included in client projects to display a subtle payment reminder or disable non-essential features if the final payment is pending.
+Digital Deadman is a small embeddable script for freelance developers. You deploy this app once, then copy one script tag into a client website. If the project is still unpaid, the script injects a fixed top bar across the site.
 
-## 🚀 Mission
-"Build a payment-locked security script for freelance developers to ensure they get paid for their work after site handover."
+## What Exists Now
 
-## 🛠 Tech Stack
-- **Framework**: Next.js 15 (App Router)
-- **Styling**: Tailwind CSS
-- **Components**: shadcn/ui
-- **Backend/Auth**: Supabase
-- **Payments**: Stripe
+- A landing page that explains the product visually.
+- A real embeddable script served from `/embed/bar`.
+- A zero-backend MVP flow based on `data-*` attributes on the script tag.
 
-## 📥 Getting Started
+## How The Current MVP Works
+
+1. Deploy this app.
+2. Copy the script tag from the landing page or the snippet below.
+3. Paste it into the client website.
+4. Keep `data-ddm-status="pending"` while payment is still open.
+5. Change it to `paid` when the invoice is settled.
+
+If status is `pending`, the bar appears. If status is `paid`, nothing is injected.
+
+## Script Snippet
+
+```html
+<script
+  defer
+  src="https://your-domain.com/embed/bar"
+  data-ddm-status="pending"
+  data-ddm-project="Marketing site"
+  data-ddm-client="Acme Studio"
+  data-ddm-contact-email="you@example.com"
+  data-ddm-invoice-url="https://payments.example.com/invoice/123"
+></script>
+```
+
+## Script Options
+
+- `data-ddm-status`: `pending` shows the bar, `paid` hides it.
+- `data-ddm-project`: Project name shown in the default message.
+- `data-ddm-client`: Client name shown in the default message.
+- `data-ddm-contact-email`: Optional mailto link in the bar.
+- `data-ddm-invoice-url`: Optional invoice/payment URL button.
+- `data-ddm-message`: Optional custom bar message. If set, it overrides the default generated text.
+- `data-ddm-accent`: Optional button color, for example `#dc2626`.
+- `data-ddm-text-color`: Optional text color, for example `#fff7ed`.
+
+## How To Apply This On A Client Website
+
+### Plain HTML
+
+Paste the script before `</body>`:
+
+```html
+<script
+  defer
+  src="https://your-domain.com/embed/bar"
+  data-ddm-status="pending"
+  data-ddm-project="Portfolio website"
+  data-ddm-client="Client Name"
+  data-ddm-contact-email="freelancer@example.com"
+></script>
+```
+
+### Next.js / React
+
+Put it in the global layout or the page that should stay protected:
+
+```tsx
+<script
+  defer
+  src="https://your-domain.com/embed/bar"
+  data-ddm-status="pending"
+  data-ddm-project="Marketing site"
+  data-ddm-client="Client Name"
+  data-ddm-contact-email="freelancer@example.com"
+></script>
+```
+
+### Webflow / Framer / CMS
+
+Add the same script inside custom code injection for the site footer or global custom code area.
+
+## Local Development
 
 ### Prerequisites
-- Node.js 18+ 
-- npm / pnpm / bun
+
+- Node.js 18+
+- npm
 
 ### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/mayurstwt/digitaldeadman.git
-   cd digitaldeadman
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000) to see the landing page.
 
-## 🤝 Contributing (Professional Workflow)
+1. Install dependencies:
 
-We follow a structured Git workflow to maintain code quality. Please follow these steps to contribute:
-
-### 1. Create a Feature Branch
-Always work on a new branch. Never push directly to `main`.
 ```bash
-git checkout -b feat/your-feature-name
-# or for fixes
-git checkout -b fix/issue-description
+npm install
 ```
 
-### 2. Make Changes & Commit
-Follow the naming conventions: `Components: PascalCase`, `Files: kebab-case`.
+2. Run the app:
+
 ```bash
-git add .
-git commit -m "feat: descriptive message about your change"
+npm run dev
 ```
 
-### 3. Push to GitHub
-```bash
-git push -u origin your-branch-name
-```
+3. Open `http://localhost:3000`.
 
-### 4. Open a Pull Request (PR)
-1. Go to the [GitHub Repository](https://github.com/mayurstwt/digitaldeadman).
-2. Click "Compare & pull request".
-3. Describe your changes clearly.
-4. Wait for review and approval before merging.
+4. Test the script directly at `http://localhost:3000/embed/bar`.
 
-## 📏 Rules & Conventions
-- **Naming**: `Components: PascalCase`, `Files: kebab-case`, `Environment Variables: UPPER_CASE`.
-- **Design**: Clean, minimal, dark mode default, mobile-first.
-- **Scope**: Refer to `project-bible.md` for the core mission and non-goals. Do not add features outside the mission without prior discussion.
+## Testing On A Real Client Project
 
----
-Built for the freelance community. 💀 
+1. Deploy this app to your own domain or a Vercel URL.
+2. Copy the script tag and replace `https://your-domain.com` with that live URL.
+3. Paste the script into the client project.
+4. Visit the client site and confirm the bar appears.
+5. Change `data-ddm-status` from `pending` to `paid` and redeploy the client site.
+6. Refresh the client site and confirm the bar is gone.
+
+## Important Limitation
+
+If the client fully controls the code and hosting, they can remove the script. This MVP is meant for the phase before final code or deployment handover, when the freelancer still controls release.
+
+Built for freelancers who need clean leverage on final payment.
