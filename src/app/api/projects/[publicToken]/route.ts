@@ -58,6 +58,8 @@ export async function GET(request: Request, context: RouteContext) {
         status: 429,
         headers: {
           "access-control-allow-origin": "*",
+          "access-control-allow-methods": "GET, OPTIONS, HEAD",
+          "access-control-allow-headers": "Content-Type, x-digital-deadman-host",
         },
       },
     );
@@ -87,7 +89,9 @@ export async function GET(request: Request, context: RouteContext) {
     {
       headers: {
         "access-control-allow-origin": "*",
-        "access-control-allow-methods": "GET, OPTIONS",
+        "access-control-allow-methods": "GET, OPTIONS, HEAD",
+        "access-control-allow-headers": "Content-Type, x-digital-deadman-host",
+        "access-control-max-age": "86400",
       },
     },
   );
@@ -98,7 +102,9 @@ export function OPTIONS() {
     status: 204,
     headers: {
       "access-control-allow-origin": "*",
-      "access-control-allow-methods": "GET, OPTIONS",
+      "access-control-allow-methods": "GET, OPTIONS, HEAD",
+      "access-control-allow-headers": "Content-Type, x-digital-deadman-host",
+      "access-control-max-age": "86400",
     },
   });
 }

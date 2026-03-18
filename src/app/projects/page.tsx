@@ -4,6 +4,7 @@ import {
   setProjectStatusAction,
   unarchiveProjectAction,
 } from "@/app/actions";
+import { DeleteProjectButton } from "@/components/delete-project-button";
 import { requireCurrentUser } from "@/lib/auth";
 import { CopyButton } from "@/components/copy-button";
 import { listProjects } from "@/lib/projects";
@@ -29,14 +30,25 @@ export default async function ProjectsPage() {
   const paidCount = activeProjects.filter((project) => project.status === "paid").length;
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-[90rem] flex-col px-6 py-16 text-white sm:px-8">
-      <div className="mb-8">
-        <p className="mb-3 text-sm uppercase tracking-[0.25em] text-zinc-500">
-          Freelancer Dashboard
-        </p>
-        <h1 className="text-4xl font-semibold tracking-tight text-white">
-          Your projects
-        </h1>
+    <main className="mx-auto flex w-full max-w-[90rem] flex-col px-6 py-16 text-white sm:px-8">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="mb-3 text-sm uppercase tracking-[0.25em] text-zinc-500">
+            Freelancer Dashboard
+          </p>
+          <h1 className="text-4xl font-semibold tracking-tight text-white">
+            Your projects
+          </h1>
+        </div>
+
+        {projects.length > 0 && (
+          <Link
+            href="/create"
+            className="inline-flex h-11 items-center justify-center rounded-xl bg-white px-5 font-semibold text-black transition-colors hover:bg-zinc-200"
+          >
+            Create project
+          </Link>
+        )}
       </div>
 
       <section className="grid gap-4 grid-cols-1 sm:grid-cols-3">
@@ -71,12 +83,6 @@ export default async function ProjectsPage() {
             <p className="mt-2 text-zinc-500">
               Create your first project to generate an embed script.
             </p>
-            <Link
-              href="/create"
-              className="mt-6 inline-flex h-12 items-center justify-center rounded-xl bg-white px-5 font-semibold text-black transition-colors hover:bg-zinc-200"
-            >
-              Create first project
-            </Link>
           </div>
         ) : (
           <div className="divide-y divide-white/10">
@@ -160,6 +166,8 @@ export default async function ProjectsPage() {
                         Archive
                       </button>
                     </form>
+
+                    <DeleteProjectButton manageToken={project.manageToken} />
                   </div>
                 </div>
 
@@ -225,6 +233,8 @@ export default async function ProjectsPage() {
                         Restore
                       </button>
                     </form>
+
+                    <DeleteProjectButton manageToken={project.manageToken} />
                   </div>
                 </div>
               </div>

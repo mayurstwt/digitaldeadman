@@ -2,26 +2,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 
-const features = [
-  {
-    title: "Create A Project",
-    desc: "Generate a management link and a tokenized script from inside Digital Deadman.",
-  },
-  {
-    title: "Live Payment Status",
-    desc: "The client website checks your live project status, so you can switch from pending to paid without editing the embed code again.",
-  },
-  {
-    title: "Built For Control",
-    desc: "This works best while you still control deployment. That is the real protection against clients bypassing it.",
-  },
-];
-
-const steps = [
-  "Create a project inside Digital Deadman and get your private management page.",
-  "Paste the generated script tag into the client website before final handover.",
-  "When payment lands, open your private page, mark the project as paid, and the bar disappears automatically.",
-];
 
 const faqs = [
   {
@@ -65,7 +45,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-black font-sans text-white selection:bg-zinc-500 selection:text-white">
+    <div className="flex flex-col bg-black font-sans text-white selection:bg-zinc-500 selection:text-white">
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
         <div className="absolute -top-[10%] -left-[10%] h-[40%] w-[40%] rounded-full bg-zinc-900/40 blur-[120px]" />
         <div className="absolute top-[60%] -right-[5%] h-[30%] w-[30%] rounded-full bg-zinc-900/30 blur-[100px]" />
@@ -73,141 +53,197 @@ export default async function Home() {
 
 
 
-      <main className="relative z-10 mx-auto flex w-full max-w-[90rem] flex-1 flex-col px-6 py-16 sm:px-8 sm:py-20">
+      <main className="relative z-10 mx-auto flex w-full max-w-[90rem] flex-1 flex-col px-6 py-16 sm:px-8 sm:py-20 lg:py-32">
         <section
           id="top"
-          className="scroll-mt-28 grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr]"
+          className="scroll-mt-28 flex flex-col items-center text-center"
         >
-          <div className="text-left">
-            <div className="mb-8 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm font-medium text-zinc-400 backdrop-blur-md">
-              <span className="mr-2 inline-block h-2 w-2 animate-pulse rounded-full bg-red-500" />
-              Stop Getting Ghosted.
-            </div>
-
-            <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-7xl">
-              Add a payment bar to the client website until the{" "}
-              <span className="bg-gradient-to-r from-zinc-200 to-zinc-500 bg-clip-text text-transparent">
-                final invoice is paid.
-              </span>
-            </h1>
-
-            <p className="mb-10 max-w-2xl text-lg leading-relaxed text-zinc-400 sm:text-xl">
-              Digital Deadman adds a clear top bar to the live site before
-              handover. It is simple, visible, and works best while you still
-              control deployment.
-            </p>
-
-            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
-              <Link
-                href="/register"
-                className="group relative flex h-14 w-full sm:w-auto items-center justify-center overflow-hidden rounded-xl bg-white px-8 text-lg font-bold text-black transition-all hover:scale-105 active:scale-95"
-              >
-                <span className="relative z-10">Create Account</span>
-                <div className="absolute inset-0 z-0 bg-gradient-to-r from-zinc-200 to-white opacity-0 transition-opacity group-hover:opacity-100" />
-              </Link>
-              <p className="text-sm text-zinc-500">
-                Sign up, create a project, then copy the embed snippet for your client site.
-              </p>
-            </div>
-
+          <div className="mb-8 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm font-medium text-zinc-400 backdrop-blur-md">
+            <span className="mr-2 inline-block h-2 w-2 animate-pulse rounded-full bg-red-500" />
+            Protect Your Work.
           </div>
 
-          <div className="relative">
-            <div className="absolute inset-0 -z-10 rounded-[2rem] bg-gradient-to-br from-red-500/15 via-transparent to-white/5 blur-2xl" />
-            <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#0d0d0d] shadow-2xl shadow-black/40">
-              <div className="border-b border-white/10 bg-[#171717] px-5 py-4">
-                <div className="flex items-center gap-2">
-                  <span className="h-3 w-3 rounded-full bg-red-400" />
-                  <span className="h-3 w-3 rounded-full bg-amber-400" />
-                  <span className="h-3 w-3 rounded-full bg-emerald-400" />
-                </div>
-              </div>
+          <h1 className="mb-8 max-w-5xl text-5xl font-extrabold tracking-tight sm:text-8xl">
+            Add a payment bar to the client website{" "}
+            <span className="bg-gradient-to-r from-zinc-200 via-zinc-400 to-zinc-600 bg-clip-text text-transparent">
+              until the final invoice is paid.
+            </span>
+          </h1>
 
-              <div className="border-b border-red-400/20 bg-red-500/10 px-5 py-3">
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-red-200">
-                      Final payment pending
-                    </p>
-                    <p className="text-sm text-red-100/70">
-                      This project remains under freelancer protection until the
-                      invoice is cleared.
-                    </p>
-                  </div>
-                  <div className="rounded-full border border-red-200/20 bg-red-200/10 px-3 py-1 text-xs font-medium text-red-100">
-                    Protected by Digital Deadman
-                  </div>
-                </div>
-              </div>
+          <p className="mb-12 max-w-3xl text-lg leading-relaxed text-zinc-400 sm:text-2xl">
+            Digital Deadman adds a clear top bar to the live site before handover.
+            Keep your leverage until you get paid. Simple, visible, and professional.
+          </p>
 
-              <div className="bg-stone-50 p-5 text-stone-900">
-                <div className="mb-6 rounded-2xl bg-[linear-gradient(135deg,#111827,#374151)] px-5 py-10 text-white">
-                  <p className="mb-3 text-xs uppercase tracking-[0.3em] text-white/50">
-                    Client Website
-                  </p>
-                  <h2 className="max-w-sm text-3xl font-semibold leading-tight">
-                    Premium studio website, ready to launch.
-                  </h2>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-2xl bg-stone-100 p-4">
-                    <div className="mb-3 h-24 rounded-xl bg-stone-200" />
-                    <div className="h-3 w-20 rounded-full bg-stone-300" />
-                  </div>
-                  <div className="rounded-2xl bg-stone-100 p-4">
-                    <div className="mb-3 h-24 rounded-xl bg-stone-200" />
-                    <div className="h-3 w-24 rounded-full bg-stone-300" />
-                  </div>
-                  <div className="rounded-2xl bg-stone-100 p-4">
-                    <div className="mb-3 h-24 rounded-xl bg-stone-200" />
-                    <div className="h-3 w-16 rounded-full bg-stone-300" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-24 grid grid-cols-1 gap-8 sm:grid-cols-3">
-          {features.map((feature) => (
-            <div
-              key={feature.title}
-              className="rounded-2xl border border-white/5 bg-white/[0.02] p-8 text-left backdrop-blur-sm transition-colors hover:border-white/10 hover:bg-white/[0.04]"
+          <div className="flex flex-col items-center gap-6 sm:flex-row">
+            <Link
+              href="/register"
+              className="boton-estelar h-16 px-10 text-xl font-bold shadow-xl shadow-white/10"
             >
-              <h3 className="mb-3 text-xl font-semibold text-white">
-                {feature.title}
-              </h3>
-              <p className="leading-relaxed text-zinc-400">{feature.desc}</p>
-            </div>
-          ))}
+              Get Started
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className={`star-${i}`}>
+                  <svg
+                    viewBox="0 0 784.11 815.53"
+                    style={{
+                      shapeRendering: "geometricPrecision",
+                      textRendering: "geometricPrecision",
+                      fillRule: "evenodd",
+                      clipRule: "evenodd",
+                    }}
+
+                  >
+                    <path
+                      className="fil-estrella"
+                      d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                    />
+                  </svg>
+                </div>
+              ))}
+            </Link>
+            <p className="max-w-xs text-sm text-zinc-500 sm:text-left">
+              Protect your next project in minutes.
+            </p>
+          </div>
         </section>
 
-        <section
-          id="how-it-works"
-          className="mt-24 scroll-mt-28 grid gap-8 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 lg:grid-cols-[0.9fr_1.1fr] lg:p-10"
-        >
-          <div>
-            <p className="mb-3 text-sm uppercase tracking-[0.25em] text-zinc-500">
-              How It Works
-            </p>
-            <h2 className="max-w-md text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              Simple enough to explain in under a minute.
+        <section id="demo" className="mt-32 scroll-mt-28">
+          <div className="mb-16 text-center">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+              See in Action
             </h2>
+            <p className="mx-auto max-w-2xl text-lg text-zinc-400">
+              Watch how Digital Deadman protects your work. A simple,
+              non-destructive bar that keeps your leverage until the invoice is paid.
+            </p>
           </div>
 
-          <div className="space-y-4">
-            {steps.map((step, index) => (
-              <div
-                key={step}
-                className="flex gap-4 rounded-2xl border border-white/8 bg-black/30 p-5"
-              >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-sm font-bold text-black">
-                  {index + 1}
+          <div className="relative mx-auto max-w-6xl">
+            {/* Device Mockup */}
+            <div className="relative rounded-[2.5rem] border-[8px] border-zinc-800 bg-zinc-900 p-2 shadow-2xl sm:border-[12px]">
+              <div className="overflow-hidden rounded-[1.5rem] border border-white/5 bg-black shadow-inner">
+                {/* Browser Header */}
+                <div className="flex items-center justify-between border-b border-white/5 bg-zinc-900/50 px-4 py-3">
+                  <div className="flex gap-1.5">
+                    <div className="h-2.5 w-2.5 rounded-full bg-red-500/50" />
+                    <div className="h-2.5 w-2.5 rounded-full bg-amber-500/50" />
+                    <div className="h-2.5 w-2.5 rounded-full bg-emerald-500/50" />
+                  </div>
+                  <div className="hidden h-5 w-64 rounded-md bg-black/40 px-3 py-0.5 text-[10px] text-zinc-500 sm:block">
+                    https://client-staging-site.com
+                  </div>
+                  <div className="h-4 w-4 rounded bg-zinc-800" />
                 </div>
-                <p className="pt-1 text-zinc-300">{step}</p>
+
+                {/* Website Content with Payment Bar */}
+                <div className="relative min-h-[400px] bg-stone-50 text-stone-900 sm:min-h-[500px]">
+                  {/* Digital Deadman Bar */}
+                  <div className="flex flex-col items-center justify-between gap-2 border-b border-red-500/20 bg-red-500/10 px-6 py-3 sm:flex-row">
+                    <div className="text-center sm:text-left">
+                      <p className="text-xs font-bold text-red-600 sm:text-sm">
+                        Final payment pending
+                      </p>
+                      <p className="text-[10px] text-red-500/80 sm:text-xs">
+                        This project is under freelancer protection until the final invoice is cleared.
+                      </p>
+                    </div>
+                    <div className="rounded-full border border-red-400/30 bg-red-500/5 px-3 py-1 text-[10px] font-bold text-red-500">
+                      Protected by Digital Deadman
+                    </div>
+                  </div>
+
+                  {/* Mock Site Content */}
+                  <div className="p-8">
+                    <div className="mb-10 rounded-2xl bg-gradient-to-br from-zinc-900 to-zinc-800 p-10 text-white shadow-xl">
+                      <div className="mb-4 inline-flex rounded-full bg-white/10 px-3 py-1 text-[10px] font-medium tracking-wider text-white/60 uppercase">
+                        Case Study
+                      </div>
+                      <h3 className="mb-4 text-4xl font-bold tracking-tight">
+                        Premium Studio Website
+                      </h3>
+                      <p className="max-w-md text-zinc-400">
+                        A full-service digital experience for a modern architecture firm.
+                        Ready for final handover and live deployment.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="group rounded-2xl bg-white p-4 shadow-sm ring-1 ring-zinc-200 transition-shadow hover:shadow-md">
+                          <div className="mb-4 h-32 rounded-xl bg-zinc-100" />
+                          <div className="h-4 w-2/3 rounded-full bg-zinc-200" />
+                          <div className="mt-2 h-3 w-1/2 rounded-full bg-zinc-100" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
-            ))}
+            </div>
+
+            {/* Background Glow */}
+            <div className="absolute -inset-48 -z-10 bg-red-500/5 blur-[120px] rounded-full" />
+          </div>
+        </section>
+
+
+        <section id="how-it-works" className="mt-32 scroll-mt-28">
+          <div className="mb-20 text-center">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+              How it works
+            </h2>
+            <p className="mx-auto max-w-2xl text-lg text-zinc-400">
+              Secure your projects in three simple steps.
+            </p>
+          </div>
+
+          <div className="relative mx-auto max-w-5xl px-4">
+            {/* Connecting Line */}
+            <div className="absolute top-12 left-0 hidden h-0.5 w-full bg-zinc-800 sm:block" />
+
+            <div className="grid grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-4">
+              {/* Step 1 */}
+              <div className="relative flex flex-col items-center text-center">
+                <div className="z-10 mb-6 flex h-24 w-24 items-center justify-center rounded-full border-4 border-black bg-zinc-900 shadow-xl shadow-black/50">
+                  <svg className="h-10 w-10 text-zinc-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <p className="mb-2 text-sm font-bold uppercase tracking-widest text-zinc-500">Step 1</p>
+                <h3 className="mb-3 text-xl font-bold text-white">Create a Project</h3>
+                <p className="max-w-[240px] text-sm leading-relaxed text-zinc-400">
+                  Generate a unique protection token for your client website in under a minute.
+                </p>
+              </div>
+
+              {/* Step 2 */}
+              <div className="relative flex flex-col items-center text-center">
+                <div className="z-10 mb-6 flex h-24 w-24 items-center justify-center rounded-full border-4 border-black bg-zinc-900 shadow-xl shadow-black/50">
+                  <svg className="h-10 w-10 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                </div>
+                <p className="mb-2 text-sm font-bold uppercase tracking-widest text-zinc-500">Step 2</p>
+                <h3 className="mb-3 text-xl font-bold text-white">Embed the Script</h3>
+                <p className="max-w-[240px] text-sm leading-relaxed text-zinc-400">
+                  Paste the generated snippet into the client's website code before final handover.
+                </p>
+              </div>
+
+              {/* Step 3 */}
+              <div className="relative flex flex-col items-center text-center">
+                <div className="z-10 mb-6 flex h-24 w-24 items-center justify-center rounded-full border-4 border-black bg-zinc-900 shadow-xl shadow-black/50">
+                  <svg className="h-10 w-10 text-zinc-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A4.833 4.833 0 0112 15.75a4.833 4.833 0 01-7.5-5.418V21" />
+                  </svg>
+                </div>
+                <p className="mb-2 text-sm font-bold uppercase tracking-widest text-zinc-500">Step 3</p>
+                <h3 className="mb-3 text-xl font-bold text-white">Get Paid & Release</h3>
+                <p className="max-w-[240px] text-sm leading-relaxed text-zinc-400">
+                  Mark the project as paid on your dashboard, and the bar disappears instantly.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -245,51 +281,104 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="mt-12 grid gap-6 lg:grid-cols-2">
-          <div className="rounded-[1.75rem] border border-white/10 bg-[#121212] p-7">
-            <p className="mb-3 text-sm uppercase tracking-[0.25em] text-zinc-500">
-              Can Clients Bypass It?
-            </p>
-            <h3 className="mb-4 text-2xl font-semibold text-white">
-              Yes, if they fully control the code and hosting.
-            </h3>
-            <p className="leading-relaxed text-zinc-400">
-              That is why the product is meant for the period before final
-              handover. The protection comes from keeping deployment control
-              until payment is complete, not from pretending the script is
-              impossible to remove.
-            </p>
-          </div>
+        <section id="value" className="mt-32 px-4">
+          <div className="mx-auto max-w-2xl overflow-hidden rounded-[2.5rem] border border-white/5 bg-[#0a0a0a] p-10 shadow-2xl ring-1 ring-white/10 sm:p-16">
+            <div className="space-y-6 text-left">
+              <div className="flex items-center gap-4">
+                <span className="text-xl font-bold text-red-500/80">+ 2.5 hrs</span>
+                <span className="text-zinc-400">chasing unpaid invoices</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-xl font-bold text-red-500/80">+ 4.0 hrs</span>
+                <span className="text-zinc-400">drafting reminder emails</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-xl font-bold text-red-500/80">+ 3.5 hrs</span>
+                <span className="text-zinc-400">legal anxiety & overthinking</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-xl font-bold text-red-500/80">+ 5.0 hrs</span>
+                <span className="text-zinc-400">handling client 'ghosting'</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-xl font-bold text-red-500/80">+ ∞ hrs</span>
+                <span className="text-zinc-400 italic">wondering if you'll ever get paid...</span>
+              </div>
+            </div>
 
-          <div className="rounded-[1.75rem] border border-white/10 bg-[#121212] p-7">
-            <p className="mb-3 text-sm uppercase tracking-[0.25em] text-zinc-500">
-              MVP Rule
-            </p>
-            <h3 className="mb-4 text-2xl font-semibold text-white">
-              Keep it visible, professional, and reversible.
-            </h3>
-            <p className="leading-relaxed text-zinc-400">
-              The first version should only inject a branded top bar tied to a
-              unique project token and allowed domain. When the invoice is paid,
-              you flip the status and the bar disappears.
-            </p>
+            <div className="mt-12 border-t border-white/5 pt-10 text-center">
+              <p className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                <span className="text-red-500">= 15+ hours</span> saved per project
+                <span className="ml-3 inline-block animate-pulse">🔒</span>
+              </p>
+            </div>
           </div>
         </section>
 
-        <section
-          id="faq"
-          className="mt-12 scroll-mt-28 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 lg:p-10"
-        >
-          <div className="max-w-2xl">
-            <p className="mb-3 text-sm uppercase tracking-[0.25em] text-zinc-500">
-              FAQ
-            </p>
-            <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              Questions people will ask before they try it.
+        <section id="why-use" className="mt-32 px-4">
+          <div className="mb-16 text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-5xl">
+              Why Use <span className="text-[#c1f031]">Digital Deadman?</span>
             </h2>
           </div>
 
-          <div className="mt-8 space-y-4">
+          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-3">
+            {/* Option 1: Legal */}
+            <div className="relative rounded-[2rem] border border-red-500/20 bg-red-500/[0.02] p-8 transition-colors hover:bg-red-500/[0.04]">
+              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <h3 className="mb-4 text-2xl font-bold text-white">Hire Lawyers</h3>
+              <p className="text-zinc-400">
+                Expensive: Pay hundreds or thousands for legal fees, plus the long wait for responses and court dates.
+              </p>
+            </div>
+
+            {/* Option 2: Manual */}
+            <div className="relative rounded-[2rem] border border-amber-500/20 bg-amber-500/[0.02] p-8 transition-colors hover:bg-amber-500/[0.04]">
+              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h3 className="mb-4 text-2xl font-bold text-white">Manual Nagging</h3>
+              <p className="text-zinc-400">
+                Stressful: Constant emails, awkward phone calls, and the uncertainty of being ignored by the client.
+              </p>
+            </div>
+
+            {/* Option 3: Digital Deadman */}
+            <div className="relative rounded-[2rem] border-2 border-[#c1f031] bg-[#c1f031]/[0.05] p-8 shadow-[0_0_50px_-12px_rgba(193,240,49,0.3)]">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[#c1f031] px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-black">
+                Best Choice
+              </div>
+              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-[#c1f031]/20 text-[#c1f031]">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="mb-4 text-2xl font-bold text-white">Digital Deadman</h3>
+              <p className="text-zinc-400">
+                Professional: Automated, non-destructive, and highly effective. Keep your leverage without the drama.
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <section id="faq" className="mt-32 scroll-mt-28">
+          <div className="mb-16 text-center">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+              Frequently Asked Questions
+            </h2>
+            <p className="mx-auto max-w-2xl text-lg text-zinc-400">
+              Questions people will ask before they try it.
+            </p>
+          </div>
+
+          <div className="mx-auto max-w-4xl space-y-4">
             {faqs.map((faq) => (
               <details
                 key={faq.question}
@@ -346,6 +435,6 @@ export default async function Home() {
           </Link>
         </div>
       </footer>
-    </div>
+    </div >
   );
 }

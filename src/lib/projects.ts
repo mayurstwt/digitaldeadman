@@ -207,6 +207,11 @@ export async function unarchiveProject(manageToken: string) {
   return result ? toProjectRecord(result) : null;
 }
 
+export async function deleteProject(manageToken: string) {
+  const collection = await getProjectsCollection();
+  await collection.deleteOne({ manageToken });
+}
+
 export async function listProjects(options?: {
   includeArchived?: boolean;
   ownerUserId?: string;
