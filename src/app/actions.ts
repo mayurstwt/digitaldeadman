@@ -5,6 +5,7 @@ import { clearSession, requireCurrentUser, setSession } from "@/lib/auth";
 import {
   archiveProject,
   createProject,
+  deleteProject,
   getProjectByManageToken,
   unarchiveProject,
   updateProject,
@@ -118,6 +119,16 @@ export async function archiveProjectAction(formData: FormData) {
   await requireProjectAccess(manageToken);
 
   await archiveProject(manageToken);
+  redirect(returnPath);
+}
+
+export async function deleteProjectAction(formData: FormData) {
+  const manageToken = getString(formData, "manageToken");
+  const returnPath = getString(formData, "returnPath") || "/projects";
+
+  await requireProjectAccess(manageToken);
+
+  await deleteProject(manageToken);
   redirect(returnPath);
 }
 

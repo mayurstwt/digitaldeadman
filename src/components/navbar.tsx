@@ -12,8 +12,24 @@ export async function Navbar() {
             <div className="mx-auto flex w-full max-w-[90rem] items-center justify-between px-6 py-4 sm:px-8">
                 <Link
                     href={user ? "/projects" : "/"}
-                    className="text-lg font-semibold tracking-tight text-white hover:opacity-80 transition-opacity"
+                    className="flex items-center gap-2 text-lg font-semibold tracking-tight text-white hover:opacity-80 transition-opacity"
                 >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-6 w-6 text-[#c1f031]"
+                    >
+                        <path d="M5 10V7a5 5 0 0 1 10 0v3" />
+                        <rect x="3" y="10" width="14" height="11" rx="2" ry="2" />
+                        <path d="M7 10v4" />
+                        <path d="M13 10v4" />
+                        <circle cx="10" cy="15" r="1" />
+                        <path d="M10 16v2" />
+                    </svg>
                     Digital Deadman
                 </Link>
 
@@ -52,7 +68,7 @@ export async function Navbar() {
                     ) : (
                         <Link
                             href="/login"
-                            className="inline-flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 font-medium text-white transition-colors hover:bg-white/10"
+                            className="boton-elegante"
                         >
                             Login
                         </Link>

@@ -20,7 +20,7 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
   }
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-[90rem] flex-1 flex-col justify-center px-6 py-16 text-white sm:px-8">
+    <main className="mx-auto flex flex-1 w-full max-w-[90rem] flex-col justify-center px-6 py-16 text-white sm:px-8">
       <div className="mx-auto w-full max-w-xl">
         <section className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 sm:p-10">
           <p className="mb-3 text-sm uppercase tracking-[0.25em] text-zinc-500">

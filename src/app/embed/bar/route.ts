@@ -3,7 +3,17 @@ const script = String.raw`(() => {
     return;
   }
 
-  const currentScript = document.currentScript;
+  let currentScript = document.currentScript;
+  
+  if (!currentScript) {
+    const scripts = document.getElementsByTagName("script");
+    for (let i = 0; i < scripts.length; i++) {
+      if (scripts[i].src && scripts[i].src.includes("/embed/bar")) {
+        currentScript = scripts[i];
+        break;
+      }
+    }
+  }
 
   if (!(currentScript instanceof HTMLScriptElement)) {
     return;
@@ -34,11 +44,11 @@ const script = String.raw`(() => {
     bar.setAttribute("role", "region");
     bar.setAttribute("aria-label", "Payment reminder");
 
-    bar.style.position = "fixed";
-    bar.style.top = "0";
-    bar.style.left = "0";
-    bar.style.right = "0";
-    bar.style.zIndex = "2147483647";
+    bar.style.setProperty("position", "fixed", "important");
+    bar.style.setProperty("top", "0", "important");
+    bar.style.setProperty("left", "0", "important");
+    bar.style.setProperty("right", "0", "important");
+    bar.style.setProperty("z-index", "2147483647", "important");
     bar.style.display = "flex";
     bar.style.alignItems = "center";
     bar.style.justifyContent = "space-between";
