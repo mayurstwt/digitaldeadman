@@ -1,136 +1,137 @@
 # Digital Deadman
 
-Digital Deadman lets a freelancer create a project, generate an embeddable script, install it on a client website, and switch that project between `pending` and `paid` from a private management page.
+> **Mission:** Build a simple payment-protection bar that freelance developers can add to client websites before final handover, so unpaid projects stay visibly protected until payment is complete.
 
-## Current MVP
+Digital Deadman allows freelancers to create projects, generate embeddable scripts, and manage project states (`pending` vs `paid`) from a private dashboard.
 
-- Landing page with product explanation, FAQ, and demo snippet
-- Register page at `/register`
-- Login page at `/login`
-- Freelancer dashboard at `/projects`
-- Project creation flow at `/create`
-- Session-protected project management page at `/projects/[manageToken]`
-- Edit flow at `/projects/[manageToken]/edit`
-- Public embed script at `/embed/bar`
-- Live project-state API at `/api/projects/[publicToken]`
+## 🚀 Key Features
 
-## How It Works
+- **Freelancer Dashboard:** Manage multiple projects and their payment statuses.
+- **Dynamic Embed Script:** A single script tag that injects a customized "Project Overdue" bar if the status is `pending`.
+- **Domain Protection:** Restrict embed script execution to specific allowed domains.
+- **Secure Management:** Unique `manageToken` for secure project editing without exposed IDs.
+- **Public API:** Lightweight endpoint for the embed script to check project status.
 
-1. Run or deploy this app.
-2. Register at `/register` or login at `/login`.
-3. Open `/create`.
-4. Create a new project.
-5. Review all projects from `/projects`.
-6. Copy the generated script from the project page.
-7. Paste that script into the client website.
-8. Keep the project status as `pending` until the invoice is paid.
-9. Mark the project as `paid` from the project page or dashboard to hide the bar.
-10. Edit project details or archive old projects from the freelancer dashboard when needed.
+## 🛠 Tech Stack
 
-## Local Testing
+- **Framework:** [Next.js 15+](https://nextjs.org/) (App Router)
+- **Styling:** [Tailwind CSS 4](https://tailwindcss.com/)
+- **Database:** [MongoDB](https://www.mongodb.com/)
+- **Auth:** Custom session-based authentication (Cookie-based)
+- **Language:** TypeScript
 
-### Start the app
-
-```bash
-npm install
-npm run dev
-```
-
-Open `http://localhost:3000`.
-
-### Create a test project
-
-1. Visit `http://localhost:3000/create`
-2. Register a user account or login
-3. Fill in the form
-4. Submit it
-5. You will land on a management URL like:
+## 📂 Project Structure
 
 ```text
-http://localhost:3000/projects/your-manage-token
+├── src/
+│   ├── app/            # Next.js App Router routes & Server Actions
+│   │   ├── api/        # Public and internal API endpoints
+│   │   ├── create/     # Project creation page
+│   │   ├── embed/      # Embed script generation logic (/embed/bar)
+│   │   ├── faq/        # Frequently Asked Questions page
+│   │   ├── login/      # User login page
+│   │   ├── register/   # User registration page
+│   │   ├── projects/   # Project dashboard and management pages
+│   │   └── actions.ts  # Centralized Server Actions for database mutations
+│   ├── components/     # Shared UI components (Buttons, Modals, etc.)
+│   ├── lib/            # Core business logic, DB utils, and Auth
+│   │   ├── auth.ts     # User session management logic
+│   │   ├── mongodb.ts  # Database connection client (Singleton pattern)
+│   │   ├── projects.ts # Project CRUD, token generation, and state logic
+│   │   ├── users.ts    # User CRUD and password hashing (logic)
+│   │   └── session.ts  # JWT/Session token signing and verification
+│   └── proxy.ts        # Script proxying logic for the /embed/bar endpoint
+├── public/             # Static assets (images, fonts, etc.)
+├── project-bible.md    # Core mission and design principles (MUST READ)
+└── DEPLOYMENT.md       # Hosting and production setup guide
 ```
 
-6. Copy the embed script from that page
+## 📋 Comprehensive MVP Overview
 
-### Test on a local client website
+Newbies can explore these key routes to understand the flow:
+- **Landing Page (`/`):** Explains the product value proposition.
+- **Register (`/register`):** Create a new freelancer account.
+- **Login (`/login`):** Access your existing dashboard.
+- **Dashboard (`/projects`):** List of all your active and archived projects.
+- **Create Project (`/create`):** Form to start a new protection project.
+- **Project Detail (`/projects/[manageToken]`):** Where you copy your embed script and toggle status.
+- **Edit Project (`/projects/[manageToken]/edit`):** Update project details or allowed domains.
+- **Public API (`/api/projects/[publicToken]`):** The endpoint the embed script hits to check status.
 
-Paste the generated script into any local site:
+## ⚙️ Getting Started
 
-```html
-<script
-  defer
-  src="http://localhost:3000/embed/bar"
-  data-ddm-project-token="your-public-token"
-></script>
-```
+### 1. Prerequisites
 
-Examples:
-- Plain HTML site running on `http://127.0.0.1:5500`
-- Another Next.js app running on `http://localhost:3001`
-- Vite app running on `http://localhost:5173`
+- **Node.js:** Ensure you have version 20 or higher installed (`node -v`).
+- **MongoDB:** You need a running MongoDB instance. This can be local (`brew tap mongodb/brew && brew install mongodb-community`) or a free cluster on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 
-If your project has allowed domains configured, make sure the domain you are testing on matches that list.
+### 2. Local Setup
 
-### Toggle the status
+1. **Clone and Install:**
+   ```bash
+   git clone <repo-url>
+   cd digitaldeadman
+   npm install
+   ```
 
-1. Go back to your private project page
-2. Click `Mark Pending` to show the bar
-3. Click `Mark Paid` to hide the bar
-4. Refresh the client website after each change
+2. **Environment Variables:**
+   Create a `.env` file in the root directory. Use `.env.example` as a template:
+   ```env
+   MONGODB_URI=mongodb://127.0.0.1:27017
+   MONGODB_DB_NAME=digitaldeadman
+   AUTH_SECRET=a-very-long-random-string-here
+   ```
 
-## Embed Script
+3. **Run Development Server:**
+   ```bash
+   npm run dev
+   ```
+   The app will be available at [http://localhost:3000](http://localhost:3000).
 
-The generated embed looks like this:
+## 🏗 Architecture & Internal Flow
 
-```html
-<script
-  defer
-  src="https://your-domain.com/embed/bar"
-  data-ddm-project-token="paste-token-from-your-dashboard"
-></script>
-```
+### The Token System (Security Layer)
+To protect freelancer privacy, we use two distinct tokens for every project:
+- **`manageToken` (Private):** A high-entropy random string used in management URLs. If someone knows this, they can control the project. Keep this private to the freelancer.
+- **`publicToken` (Public):** A separate random string used by the embed script. It only allows *reading* a limited set of public data (project name, status) but *not* modifying it.
 
-Replace `https://your-domain.com` with the URL where this app is deployed.
+### The Embed Life Cycle
+1. **Request:** The client's browser loads the `<script src=".../embed/bar" ...>`.
+2. **Proxy:** The `/embed/bar` route (managed via `proxy.ts`) serves the JavaScript payload.
+3. **Execution:** The script runs on the client site, reads the `data-ddm-project-token` attribute.
+4. **Validation:** It calls the Public API on our server. The server checks:
+    - Does the token exist?
+    - Is the current `Origin` (domain) allowed in the project's `allowedDomains` list?
+5. **Injection:** If valid and `status === 'pending'`, it injects a `<style>` block and a fixed `<div>` (the bar) into the DOM.
 
-## Authentication
+### Database Schema (MongoDB)
+- **`users`:** Stores freelancer accounts (`email`, `passwordHash`).
+- **`projects`:** Stores project metadata (`projectName`, `status`, `tokens`, `allowedDomains`, `ownerUserId`).
+- **`rate_limits`:** Tracks IP-based requests to prevent brute force or API abuse.
 
-App routes for project management require a signed-in user session:
+## 🧪 Detailed Local Testing Guide
 
-- `/create`
-- `/projects`
-- `/projects/:manageToken`
-- `/projects/:manageToken/edit`
+Testing an embed locally can be tricky because `localhost:3000` (our app) needs to be reachable by the "client" site.
 
-Users register as freelancers and only see/manage their own projects.
+1. **Expose your app:** Use `ngrok http 3000`. This gives you a URL like `https://xyz.ngrok-free.app`.
+2. **Generate Script:** Copy the script tag from your project page, but replace `localhost:3000` with your `ngrok` URL.
+3. **Paste in Client Site:** Drop that script into another project's HTML (even just a file like `index.html` opened in your browser).
+4. **Toggle Status:** In your Digital Deadman dashboard, switch between `Pending` and `Paid`. Refresh the client site to see the bar appear/disappear!
 
-## Allowed Domains
+## 🔐 Handover Strategy & Leverage
 
-When creating a project, you can provide a comma-separated list such as:
+It's vital for new developers to understand that this tool is a **leverage mechanism**, not an un-bypassable lock. 
+- If the client has the source code and knows how to search for `<script>`, they can remove it.
+- **The Ideal Use:** Add the script *while you still control the deployment*. Once the final invoice is paid, you mark it as `Paid` (bar disappears), and then you hand over the clean source code (optionally removing the script entirely).
 
-```text
-clientsite.com, www.clientsite.com
-```
+## 📄 Documentation Links
 
-If allowed domains are set, the bar will only appear when the script runs on those domains. If you leave the field empty, the embed works on any domain.
+- **[Project Bible](file:///home/mayur/Desktop/Projects/small-builds/digitaldeadman/project-bible.md):** The core "spec" for the project. Read this first!
+- **[Deployment Guide](file:///home/mayur/Desktop/Projects/small-builds/digitaldeadman/DEPLOYMENT.md):** How to put this live on Vercel or Render.
 
-## Deployment
+## 🤝 Contributing
 
-See [DEPLOYMENT.md](file:///home/mayur/Desktop/Projects/small-builds/digitaldeadman/DEPLOYMENT.md) for full hosting and database setup instructions.
-
-## Important: Handover Strategy
-
-Digital Deadman relies on the freelancer's control of the deployment **before** final handover.
-- If the client fully controls the codebase and hosting, they can delete the script or bypass the domain checks.
-- This is not a bug, but a fundamental design choice: the tool provides leverage while you still manage the release process.
-- Once payment is complete, you can mark the project as `paid` and (optionally) remove the script before final source code delivery.
-
-## Storage and Configuration
-
-The current MVP stores project records and rate limits in MongoDB. Set:
-
-```text
-MONGODB_URI=mongodb://127.0.0.1:27017
-MONGODB_DB_NAME=digitaldeadman
-AUTH_SECRET=your-secure-auth-secret
-```
+1. **Read the Bible:** Seriously, read `project-bible.md`.
+2. **Server Actions:** All data mutations (creates, updates, deletes) MUST happen in `src/app/actions.ts`.
+3. **Linting:** We use ESLint. Run `npm run lint` before opening a PR.
 
