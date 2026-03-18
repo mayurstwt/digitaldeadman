@@ -14,17 +14,27 @@ export function createSessionValue(userId: string) {
 }
 
 export function verifySessionValue(value?: string | null) {
-  if (!value) {
+  if (!value || typeof value !== "string") {
     return null;
   }
 
-  const [userId, signature] = value.split(".");
+  const parts = value.split(".");
+  if (parts.length < 2) {
+    return null;
+  }
+
+  const signature = parts.pop();
+  const userId = parts.join(".");
 
   if (!userId || !signature) {
     return null;
   }
 
   const expected = sign(userId);
+
+  if (signature.length !== expected.length) {
+    return null;
+  }
 
   if (
     !crypto.timingSafeEqual(

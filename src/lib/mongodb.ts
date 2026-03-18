@@ -1,6 +1,8 @@
 import { MongoClient } from "mongodb";
 
-const mongoUri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017";
+const rawUri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017";
+// Clean the URI: remove whitespace and literal quotes that might come from .env
+const mongoUri = rawUri.trim().replace(/^["']|["']$/g, "");
 const mongoDbName = process.env.MONGODB_DB_NAME || "digitaldeadman";
 
 type GlobalMongoCache = typeof globalThis & {
@@ -10,7 +12,11 @@ type GlobalMongoCache = typeof globalThis & {
 const globalCache = globalThis as GlobalMongoCache;
 
 function createClientPromise() {
-  const client = new MongoClient(mongoUri);
+  const client = new MongoClient(mongoUri, {
+    connectTimeoutMS: 10000, // 10 seconds
+    socketTimeoutMS: 45000,  // 45 seconds
+    serverSelectionTimeoutMS: 10000,
+  });
   return client.connect();
 }
 

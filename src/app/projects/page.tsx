@@ -32,13 +32,22 @@ export default async function ProjectsPage() {
   return (
     <main className="mx-auto flex w-full max-w-[90rem] flex-col px-6 py-16 text-white sm:px-8">
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="mb-3 text-sm uppercase tracking-[0.25em] text-zinc-500">
-            Freelancer Dashboard
-          </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-white">
-            Your projects
-          </h1>
+        <div className="flex justify-between w-full">
+          <div>
+            <p className="mb-3 text-sm uppercase tracking-[0.25em] text-zinc-500">
+              Freelancer Dashboard
+            </p>
+            <h1 className="text-4xl font-semibold tracking-tight text-white">
+              Your projects
+            </h1>
+          </div>
+
+          <Link
+            href="/create"
+            className="mt-4 inline-flex h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
+          >
+            Create project
+          </Link>
         </div>
 
         {projects.length > 0 && (
