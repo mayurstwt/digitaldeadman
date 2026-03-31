@@ -50,14 +50,14 @@ export default async function ProjectsPage() {
           </Link>
         </div>
 
-        {projects.length > 0 && (
+        {/* {projects.length > 0 && (
           <Link
             href="/create"
             className="inline-flex h-11 items-center justify-center rounded-xl bg-white px-5 font-semibold text-black transition-colors hover:bg-zinc-200"
           >
             Create project
           </Link>
-        )}
+        )} */}
       </div>
 
       <section className="grid gap-4 grid-cols-1 sm:grid-cols-3">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { registerAction } from "@/app/actions";
+import { RegisterSubmitButton } from "@/components/register-submit-button";
 import { getCurrentUser } from "@/lib/auth";
 
 type RegisterPageProps = {
@@ -81,12 +82,7 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
               />
             </label>
 
-            <button
-              type="submit"
-              className="mt-2 inline-flex h-14 w-full items-center justify-center rounded-xl bg-white px-8 text-lg font-bold text-black transition-transform hover:scale-[1.01] active:scale-[0.99]"
-            >
-              Create Account
-            </button>
+            <RegisterSubmitButton />
           </form>
 
           <p className="mt-6 text-sm text-zinc-500">

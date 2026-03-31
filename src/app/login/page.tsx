@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { loginAction } from "@/app/actions";
+import { LoginSubmitButton } from "@/components/login-submit-button";
 import { getCurrentUser } from "@/lib/auth";
 
 type LoginPageProps = {
@@ -64,12 +65,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             />
           </label>
 
-          <button
-            type="submit"
-            className="mt-2 inline-flex h-14 items-center justify-center rounded-xl bg-white px-8 text-lg font-bold text-black transition-transform hover:scale-[1.01] active:scale-[0.99]"
-          >
-            Login
-          </button>
+          <LoginSubmitButton />
         </form>
 
         <p className="mt-6 text-sm text-zinc-500">
