@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import { promisify } from "node:util";
 import { getMongoDb } from "@/lib/mongodb";
 
 export type UserRole = "freelancer";
@@ -30,13 +31,21 @@ type UserDocument = {
 };
 
 const collectionName = "users";
+const scryptAsync = promisify(crypto.scrypt);
+
+type GlobalUserCache = typeof globalThis & {
+  __digitalDeadmanUsersCollectionPromise?: Promise<import("mongodb").Collection<UserDocument>>;
+};
+
+const globalUserCache = globalThis as GlobalUserCache;
 
 function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
 }
 
-function hashPassword(password: string, salt: string) {
-  return crypto.scryptSync(password, salt, 64).toString("hex");
+async function hashPassword(password: string, salt: string) {
+  const derivedKey = await scryptAsync(password, salt, 64);
+  return Buffer.from(derivedKey as ArrayBuffer).toString("hex");
 }
 
 function toUserRecord(document: UserDocument): UserRecord {
@@ -51,18 +60,25 @@ function toUserRecord(document: UserDocument): UserRecord {
 }
 
 async function getUsersCollection() {
-  const db = await getMongoDb();
-  const collection = db.collection<UserDocument>(collectionName);
+  if (!globalUserCache.__digitalDeadmanUsersCollectionPromise) {
+    globalUserCache.__digitalDeadmanUsersCollectionPromise = (async () => {
+      const db = await getMongoDb();
+      const collection = db.collection<UserDocument>(collectionName);
 
-  await collection.createIndexes([{ key: { email: 1 }, unique: true }]);
+      await collection.createIndexes([{ key: { email: 1 }, unique: true }]);
 
-  return collection;
+      return collection;
+    })();
+  }
+
+  return globalUserCache.__digitalDeadmanUsersCollectionPromise;
 }
 
 export async function createUser(input: CreateUserInput) {
   const collection = await getUsersCollection();
   const now = new Date().toISOString();
   const passwordSalt = crypto.randomBytes(12).toString("hex");
+  const passwordHash = await hashPassword(input.password, passwordSalt);
 
   const user: UserDocument = {
     _id: crypto.randomUUID(),
@@ -70,7 +86,7 @@ export async function createUser(input: CreateUserInput) {
     email: normalizeEmail(input.email),
     role: "freelancer",
     passwordSalt,
-    passwordHash: hashPassword(input.password, passwordSalt),
+    passwordHash,
     createdAt: now,
     updatedAt: now,
   };
@@ -99,7 +115,7 @@ export async function verifyUserCredentials(email: string, password: string) {
     return null;
   }
 
-  const attemptedHash = hashPassword(password, user.passwordSalt);
+  const attemptedHash = await hashPassword(password, user.passwordSalt);
   const matches = crypto.timingSafeEqual(
     Buffer.from(attemptedHash, "hex"),
     Buffer.from(user.passwordHash, "hex"),

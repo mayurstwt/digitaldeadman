@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { getMongoDb } from "@/lib/mongodb";
+import type { Collection } from "mongodb";
 
 export type ProjectStatus = "pending" | "paid";
 
@@ -45,6 +46,12 @@ type ProjectDocument = Omit<ProjectRecord, "id"> & {
 
 const collectionName = "projects";
 
+type GlobalProjectsCache = typeof globalThis & {
+  __digitalDeadmanProjectsCollectionPromise?: Promise<Collection<ProjectDocument>>;
+};
+
+const globalProjectsCache = globalThis as GlobalProjectsCache;
+
 function createToken(length = 24) {
   return crypto.randomBytes(length).toString("hex");
 }
@@ -76,15 +83,22 @@ function toProjectRecord(document: ProjectDocument): ProjectRecord {
 }
 
 async function getProjectsCollection() {
-  const db = await getMongoDb();
-  const collection = db.collection<ProjectDocument>(collectionName);
+  if (!globalProjectsCache.__digitalDeadmanProjectsCollectionPromise) {
+    globalProjectsCache.__digitalDeadmanProjectsCollectionPromise = (async () => {
+      const db = await getMongoDb();
+      const collection = db.collection<ProjectDocument>(collectionName);
 
-  await collection.createIndexes([
-    { key: { manageToken: 1 }, unique: true },
-    { key: { publicToken: 1 }, unique: true },
-  ]);
+      await collection.createIndexes([
+        { key: { manageToken: 1 }, unique: true },
+        { key: { publicToken: 1 }, unique: true },
+        { key: { ownerUserId: 1, archivedAt: 1, createdAt: -1 } },
+      ]);
 
-  return collection;
+      return collection;
+    })();
+  }
+
+  return globalProjectsCache.__digitalDeadmanProjectsCollectionPromise;
 }
 
 export async function createProject(input: CreateProjectInput) {
